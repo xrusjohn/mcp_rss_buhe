@@ -4,6 +4,14 @@ import cron from 'node-cron';
 import { initDatabase } from './config/database';
 import { OpmlService } from './services/OpmlService';
 import { RssService } from './services/RssService';
+import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
+
+// Create an MCP server
+const server = new McpServer({
+  name: "RSS",
+  version: "1.0.0"
+});
 
 // 加载环境变量
 dotenv.config();
@@ -44,6 +52,11 @@ async function main() {
     console.log(`- OPML文件: ${opmlFilePath}`);
     console.log(`- 更新间隔: ${updateInterval}分钟`);
     
+
+
+
+    const transport = new StdioServerTransport();
+    await server.connect(transport);
   } catch (error) {
     console.error('服务启动失败:', error);
     process.exit(1);
