@@ -51,7 +51,7 @@ async function main() {
     await opmlService.parseAndSaveFeeds(opmlFilePath);
     
     // 立即获取一次RSS更新
-    await rssService.fetchAllFeeds();
+    // await rssService.fetchAllFeeds();
     
     // 设置定时任务，定期获取RSS更新
     const cronExpression = `*/${updateInterval} * * * *`; // 每X分钟执行一次
