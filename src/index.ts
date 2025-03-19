@@ -86,7 +86,7 @@ async function main() {
       if (request.params.name === "query") {}
       throw new Error(`Unknown tool: ${request.params.name}`);
     });
-
+    console.log('MCP 启动成功')
     const transport = new StdioServerTransport();
     await server.connect(transport);
   } catch (error) {
