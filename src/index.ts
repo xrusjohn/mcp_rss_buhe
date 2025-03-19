@@ -6,6 +6,7 @@ import cron from 'node-cron';
 import { initDatabase } from './config/database';
 import { OpmlService } from './services/OpmlService';
 import { RssService } from './services/RssService';
+import { McpService } from './services/McpService';
 
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import {
@@ -13,6 +14,7 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { ArticleStatus } from './entities/Article';
 
 const server = new Server(
   {
@@ -37,19 +39,20 @@ const updateInterval = process.env.RSS_UPDATE_INTERVAL || '5';
 // 初始化服务
 const opmlService = new OpmlService();
 const rssService = new RssService();
-
+const mcpService = new McpService();
     
 
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
       {
-        name: "query",
-        description: "Run a read-only SQL query",
+        name: "get_content",
+        description: "Get articles by subscribing to RSS",
         inputSchema: {
           type: "object",
           properties: {
-            sql: { type: "string" },
+            status: { type: "string" },
+            limit: { type: "number" }
           },
         },
       },
@@ -58,7 +61,15 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 });
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  if (request.params.name === "query") {}
+  if (request.params.name === "get_content") {
+    const status = request.params.arguments?.status as string;
+    const limit = request.params.arguments?.limit as number;
+    const result = await mcpService.get_content(status as ArticleStatus, limit);
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+      isError: false,
+    };
+  }
   throw new Error(`Unknown tool: ${request.params.name}`);
 });
 // console.log('MCP 启动成功')
