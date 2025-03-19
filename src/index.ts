@@ -4,14 +4,26 @@ import cron from 'node-cron';
 import { initDatabase } from './config/database';
 import { OpmlService } from './services/OpmlService';
 import { RssService } from './services/RssService';
-import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 
-// Create an MCP server
-const server = new McpServer({
-  name: "RSS",
-  version: "1.0.0"
-});
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
+import {
+  CallToolRequestSchema,
+  ListToolsRequestSchema,
+} from "@modelcontextprotocol/sdk/types.js";
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+
+const server = new Server(
+  {
+    name: "example-servers/postgres",
+    version: "0.1.0",
+  },
+  {
+    capabilities: {
+      tools: {},
+    },
+  },
+);
+
 
 // 加载环境变量
 dotenv.config();
@@ -53,7 +65,27 @@ async function main() {
     console.log(`- 更新间隔: ${updateInterval}分钟`);
     
 
-
+    server.setRequestHandler(ListToolsRequestSchema, async () => {
+      return {
+        tools: [
+          {
+            name: "query",
+            description: "Run a read-only SQL query",
+            inputSchema: {
+              type: "object",
+              properties: {
+                sql: { type: "string" },
+              },
+            },
+          },
+        ],
+      };
+    });
+    
+    server.setRequestHandler(CallToolRequestSchema, async (request) => {
+      if (request.params.name === "query") {}
+      throw new Error(`Unknown tool: ${request.params.name}`);
+    });
 
     const transport = new StdioServerTransport();
     await server.connect(transport);
