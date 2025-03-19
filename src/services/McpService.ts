@@ -72,7 +72,7 @@ export class McpService {
         success: true
       };
     } catch (error) {
-      console.error('获取文章内容失败:', error);
+      // console.error('获取文章内容失败:', error);
       return {
         articles: [],
         success: false,
@@ -112,7 +112,7 @@ export class McpService {
         message: `文章 ${articleId} 状态已更新为 ${status}`
       };
     } catch (error) {
-      console.error('设置文章状态失败:', error);
+      // console.error('设置文章状态失败:', error);
       return {
         success: false,
         message: `设置文章状态失败: ${error instanceof Error ? error.message : '未知错误'}`

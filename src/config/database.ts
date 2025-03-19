@@ -16,9 +16,9 @@ export const AppDataSource = new DataSource({
 export async function initDatabase(): Promise<void> {
   try {
     await AppDataSource.initialize();
-    console.log('数据库连接已初始化');
+    // console.log('数据库连接已初始化');
   } catch (error) {
-    console.error('数据库连接失败:', error);
+    // console.error('数据库连接失败:', error);
     process.exit(1);
   }
 };

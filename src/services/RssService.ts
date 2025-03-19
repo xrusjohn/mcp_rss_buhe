@@ -25,15 +25,11 @@ export class RssService {
       const feedRepository = AppDataSource.getRepository(Feed);
       const feeds = await feedRepository.find();
       
-      console.log(`开始获取 ${feeds.length} 个订阅源的最新文章`);
-      
       for (const feed of feeds) {
         await this.fetchFeed(feed);
       }
-      
-      console.log('所有订阅源更新完成');
     } catch (error) {
-      console.error('获取订阅源失败:', error);
+      // Handle error silently
     }
   }
   
@@ -43,8 +39,6 @@ export class RssService {
    */
   private async fetchFeed(feed: Feed): Promise<void> {
     try {
-      console.log(`正在获取: ${feed.title}`);
-      
       const feedData = await this.parser.parseURL(feed.url);
       const articleRepository = AppDataSource.getRepository(Article);
       
@@ -72,7 +66,7 @@ export class RssService {
         }
       }
     } catch (error) {
-      console.error(`获取订阅源 ${feed.title} 失败:`, error);
+      // console.error(`获取订阅源 ${feed.title} 失败:`, error);
     }
   }
 }

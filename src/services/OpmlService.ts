@@ -25,7 +25,7 @@ export class OpmlService {
         ? opmlFilePath 
         : path.join(process.cwd(), opmlFilePath);
       
-      console.log(`解析OPML文件: ${absolutePath}`);
+      // console.log(`解析OPML文件: ${absolutePath}`);
       
       // 读取OPML文件
       const opmlContent = fs.readFileSync(absolutePath, 'utf-8');
@@ -44,17 +44,17 @@ export class OpmlService {
       const result = parser.parse(opmlContent);
       
       // 打印解析结果以便调试
-      console.log('解析结果:', JSON.stringify(result, null, 2));
+      // console.log('解析结果:', JSON.stringify(result, null, 2));
       
       // 处理订阅源
       if (result.opml && result.opml.body && result.opml.body.outline) {
-        console.log('找到outline元素:', result.opml.body.outline);
+        // console.log('找到outline元素:', result.opml.body.outline);
         await this.processOutlines(result.opml.body.outline);
       } else {
-        console.error('OPML文件格式不正确');
+        // console.error('OPML文件格式不正确');
       }
     } catch (error) {
-      console.error('解析OPML文件失败:', error);
+      // console.error('解析OPML文件失败:', error);
     }
   }
   
@@ -67,13 +67,13 @@ export class OpmlService {
     const feedRepository = AppDataSource.getRepository(Feed);
     const indent = '  '.repeat(level);
     
-    console.log(`处理${outlines.length}个outline元素`);
+    // console.log(`处理${outlines.length}个outline元素`);
     
     for (const outline of outlines) {
       // 打印当前outline的基本信息和属性
-      console.log(`${indent}└─ ${outline.title || outline.text || '未命名'}`);
-      console.log(`${indent}   类型: ${outline.type || '未指定'}`);
-      console.log(`${indent}   RSS URL: ${outline.xmlUrl || '无'}`);
+      // console.log(`${indent}└─ ${outline.title || outline.text || '未命名'}`);
+      // console.log(`${indent}   类型: ${outline.type || '未指定'}`);
+      // console.log(`${indent}   RSS URL: ${outline.xmlUrl || '无'}`);
       
       // 如果是RSS订阅源
       if (outline.type === 'rss' && outline.xmlUrl) {
@@ -91,9 +91,9 @@ export class OpmlService {
           feed.category = parentCategory;
           
           await feedRepository.save(feed);
-          console.log(`${indent}  ├─ RSS URL: ${feed.url}`);
-          console.log(`${indent}  ├─ 网站URL: ${feed.htmlUrl || '未提供'}`);
-          console.log(`${indent}  └─ 分类: ${feed.category || '未分类'}`);
+          // console.log(`${indent}  ├─ RSS URL: ${feed.url}`);
+          // console.log(`${indent}  ├─ 网站URL: ${feed.htmlUrl || '未提供'}`);
+          // console.log(`${indent}  └─ 分类: ${feed.category || '未分类'}`);
         }
       }
       // 如果是分类
