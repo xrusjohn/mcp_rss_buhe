@@ -28,7 +28,7 @@ export class Article {
   fetchDate!: string;
 
   @Column({
-    type: 'varchar',
+    type: 'enum',
     enum: ArticleStatus,
     default: ArticleStatus.UNREAD
   })

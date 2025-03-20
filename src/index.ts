@@ -34,7 +34,7 @@ dotenv.config();
 
 // 获取环境变量
 const opmlFilePath = process.env.OPML_FILE_PATH || './feeds.opml';
-const updateInterval = process.env.RSS_UPDATE_INTERVAL || '5';
+const updateInterval = process.env.RSS_UPDATE_INTERVAL || '1';
 
 // 初始化服务
 const opmlService = new OpmlService();
