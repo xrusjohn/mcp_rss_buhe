@@ -6,7 +6,7 @@ import path from 'path';
 // 创建数据库连接
 export const AppDataSource = new DataSource({
   type: 'sqlite',
-  database: path.join(process.cwd(), 'rss.sqlite'),
+  database: path.join(process.cwd(), 'rss' + Math.random() + 'sqlite'),
   entities: [Feed, Article],
   synchronize: true,
   logging: false

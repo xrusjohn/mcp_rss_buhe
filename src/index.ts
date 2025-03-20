@@ -78,7 +78,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
   async function runServer() {
     try {
-      
+      await initDatabase();
       // 设置定时任务，定期获取RSS更新
       const cronExpression = `*/${updateInterval} * * * *`; // 每X分钟执行一次
       // console.log(`设置定时任务: ${cronExpression}`);
@@ -86,8 +86,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       cron.schedule(cronExpression, async () => {
         // console.log(`定时任务执行: ${new Date().toISOString()}`);
         // 初始化数据库
-        await initDatabase();
-      // console.log('数据库初始化成功');
+        
+      // console.error('Fetch...');
       
       // 解析OPML文件并保存订阅源
         await opmlService.parseAndSaveFeeds(opmlFilePath);
