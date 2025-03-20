@@ -77,7 +77,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
 
   async function runServer() {
-    try {
       await initDatabase();
       // 设置定时任务，定期获取RSS更新
       const cronExpression = `*/${updateInterval} * * * *`; // 每X分钟执行一次
@@ -93,10 +92,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         await opmlService.parseAndSaveFeeds(opmlFilePath);
         await rssService.fetchAllFeeds();
       });
-    } catch (error) {
-      // console.error('服务启动失败:', error);
-      process.exit(1);
-    }
+    
     const transport = new StdioServerTransport();
     await server.connect(transport);
   }
