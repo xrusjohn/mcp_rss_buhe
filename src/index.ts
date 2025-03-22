@@ -52,10 +52,20 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           type: "object",
           properties: {
             status: { type: "string" },
+            source: { type: "string" },
             limit: { type: "number" }
           },
         },
       },
+      {
+        name: "get_sources",
+        description: "Get all sources of articles",
+        inputSchema: {
+          type: "object",
+          properties: {
+          },
+        },
+      }
     ],
   };
 });
@@ -63,8 +73,16 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   if (request.params.name === "get_content") {
     const status = request.params.arguments?.status as string;
+    const source = request.params.arguments?.source as string;
     const limit = request.params.arguments?.limit as number;
-    const result = await mcpService.get_content(status as ArticleStatus, limit);
+    const result = await mcpService.get_content(status as ArticleStatus, limit, source);
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+      isError: false,
+    };
+  }
+  if (request.params.name === "get_sources") {
+    const result = await mcpService.get_sources();
     return {
       content: [{ type: "text", text: JSON.stringify(result) }],
       isError: false,
