@@ -59,7 +59,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: "get_sources",
-        description: "Get all sources of articles",
+        description: "All sources of the article, the result is in array form. If you want to use the source parameter of get_content, which values ​​should be used, call it first",
         inputSchema: {
           type: "object",
           properties: {
