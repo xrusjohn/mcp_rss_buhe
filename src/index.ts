@@ -65,6 +65,17 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           properties: {
           },
         },
+      },
+      {
+        name: "set_tag",
+        description: "Set article tag, status has only two values: normal, favorite, articleId is article id",
+        inputSchema: {
+          type: "object",
+          properties: {
+            status: { type: "string" },
+            articleId: { type: "number" }
+          }
+        }
       }
     ],
   };
@@ -83,6 +94,15 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   }
   if (request.params.name === "get_sources") {
     const result = await mcpService.get_sources();
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+      isError: false,
+    };
+  }
+  if (request.params.name === "set_tag") {
+    const status = request.params.arguments?.status as string;
+    const articleId = request.params.arguments?.articleId as number;
+    const result = await mcpService.set_tag(articleId, status as ArticleStatus);
     return {
       content: [{ type: "text", text: JSON.stringify(result) }],
       isError: false,
