@@ -59,7 +59,7 @@ export class RssService {
           article.link = item.link || '';
           article.pubDate = item.pubDate || item.isoDate || fetchDate;
           article.fetchDate = fetchDate;
-          article.status = ArticleStatus.UNREAD;
+          article.status = ArticleStatus.NORMAL;
           article.feed = feed;
           
           await articleRepository.save(article);

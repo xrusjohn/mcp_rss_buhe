@@ -77,7 +77,7 @@ export class McpService {
       // 构建查询
       const queryBuilder = articleRepository.createQueryBuilder('article')
         .leftJoinAndSelect('article.feed', 'feed')
-        .orderBy('article.fetchDate', 'DESC')
+        .orderBy('article.pubDate', 'DESC')
         .take(limit);
       
       // 构建where条件
@@ -86,7 +86,7 @@ export class McpService {
       }
       
       // 如果指定了来源，添加来源过滤
-      if (source && source !== 'ALL') {
+      if (source) {
         // 如果已经有where条件，使用andWhere
         if (status) {
           queryBuilder.andWhere('feed.title = :source', { source });
@@ -97,13 +97,6 @@ export class McpService {
       
       const articles = await queryBuilder.getMany();
       
-      // 将获取的文章标记为已读
-      for (const article of articles) {
-        if (article.status === ArticleStatus.UNREAD) {
-          article.status = ArticleStatus.READ;
-          await articleRepository.save(article);
-        }
-      }
       
       // 格式化返回数据
       const formattedArticles = articles.map(article => ({

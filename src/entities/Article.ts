@@ -2,8 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Feed } from './Feed';
 
 export enum ArticleStatus {
-  UNREAD = 'unread',
-  READ = 'read',
+  NORMAL = 'normal',
   FAVORITE = 'favorite'
 }
 
@@ -30,7 +29,7 @@ export class Article {
   @Column({
     type: 'enum',
     enum: ArticleStatus,
-    default: ArticleStatus.UNREAD
+    default: ArticleStatus.NORMAL
   })
   status!: ArticleStatus;
 

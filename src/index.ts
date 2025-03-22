@@ -47,7 +47,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
     tools: [
       {
         name: "get_content",
-        description: "Get articles by subscribing to RSS, status has only three values: unread, read, favorite",
+        description: "Get articles by subscribing to RSS, status has only two values: normal, favorite, source is empty to indicate all sources, Sort by article time, with the latest at the front.",
         inputSchema: {
           type: "object",
           properties: {
