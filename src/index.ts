@@ -47,7 +47,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
     tools: [
       {
         name: "get_content",
-        description: "Get articles by subscribing to RSS",
+        description: "Get articles by subscribing to RSS, status has only three values: unread, read, favorite",
         inputSchema: {
           type: "object",
           properties: {
