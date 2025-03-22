@@ -1,6 +1,6 @@
 # MCP RSS
 
-MCP RSS is a Model Context Protocol (MCP) server for interacting with RSS feeds. It allows you to subscribe to RSS feeds, fetch articles, and manage your reading status through a simple API.
+MCP RSS is a Model Context Protocol (MCP) server for interacting with RSS feeds.
 
 ## Features
 
