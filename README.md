@@ -43,26 +43,7 @@ Set the following environment variables to configure MCP RSS:
 | OPML_FILE_PATH | Path to your OPML file with RSS feeds | "./feeds.opml" |
 | RSS_UPDATE_INTERVAL | Interval to fetch RSS updates (in minutes) | 1 |
 
-## OPML File Format
-
-Create an OPML file to define your RSS feed subscriptions. Example:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<opml version="2.0">
-  <head>
-    <title>RSS Subscriptions</title>
-  </head>
-  <body>
-    <outline text="Technology" title="Technology">
-      <outline type="rss" text="Example Tech Blog" title="Example Tech Blog" 
-               xmlUrl="https://example.com/feed" htmlUrl="https://example.com"/>
-    </outline>
-  </body>
-</opml>
-```
-
-## API Reference
+## MCP API Reference
 
 The MCP RSS server exposes the following API methods:
 
