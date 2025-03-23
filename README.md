@@ -25,7 +25,22 @@ $ docker run -itd --name mysql-test -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 m
 
 ### Install MCP
 
-npx mcp_rss
+This MCP uses stdio for communication. Fill in ``` npx mcp_rss ``` in the command, fill in the configuration that needs to be customized in the environment variable, and at least use your own opml file.
+
+Use in claude desktop
+```json
+{
+  "key": "rss",
+  "command": "npx",
+  "args": [
+    "mcp_rss"
+  ],
+  "env": {
+    "OPML_FILE_PATH": "/Users/guyanhua/feeds.opml"
+  }
+}
+
+```
 
 ## Configuration
 
