@@ -7,6 +7,16 @@ export const schema = {
                 "NORMAL",
                 "FAVORITE"
             ]
+        },
+        "FeedType": {
+            "name": "FeedType",
+            "values": [
+                "RSS",
+                "ATOM",
+                "JSON_FEED",
+                "CUSTOM_API",
+                "HTML"
+            ]
         }
     },
     "nonModels": {
@@ -34,10 +44,26 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "htmlUrl": {
+                    "name": "htmlUrl",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "category": {
                     "name": "category",
                     "isArray": false,
                     "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "feedType": {
+                    "name": "feedType",
+                    "isArray": false,
+                    "type": {
+                        "enum": "FeedType"
+                    },
                     "isRequired": false,
                     "attributes": []
                 },
@@ -47,6 +73,23 @@ export const schema = {
                     "type": "AWSDateTime",
                     "isRequired": false,
                     "attributes": []
+                },
+                "isActive": {
+                    "name": "isActive",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "articles": {
+                    "name": "articles",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Article"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
                 }
             }
         },
@@ -72,6 +115,13 @@ export const schema = {
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "content": {
+                    "name": "content",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "abstract": {
@@ -102,13 +152,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "status": {
-                    "name": "status",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "author": {
                     "name": "author",
                     "isArray": false,
@@ -116,8 +159,69 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": {
+                        "enum": "ArticleStatus"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "feedTitle": {
                     "name": "feedTitle",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "feedCategory": {
+                    "name": "feedCategory",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "UpdateResponse": {
+            "name": "UpdateResponse",
+            "fields": {
+                "success": {
+                    "name": "success",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "message": {
+                    "name": "message",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "SubscriptionResponse": {
+            "name": "SubscriptionResponse",
+            "fields": {
+                "success": {
+                    "name": "success",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "subscriptionArn": {
+                    "name": "subscriptionArn",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "message": {
+                    "name": "message",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -127,5 +231,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "2171f0e03a3ae6024e4860bd2637a3af"
+    "version": "556d3587bbc09e0018d1237987ab899e"
 };

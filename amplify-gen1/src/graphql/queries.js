@@ -7,8 +7,26 @@ export const getFeed = /* GraphQL */ `
       id
       title
       url
+      htmlUrl
       category
+      feedType
       lastFetched
+      isActive
+      articles {
+        id
+        feedId
+        title
+        content
+        abstract
+        link
+        pubDate
+        fetchDate
+        author
+        status
+        feedTitle
+        feedCategory
+        __typename
+      }
       __typename
     }
   }
@@ -19,8 +37,26 @@ export const listFeeds = /* GraphQL */ `
       id
       title
       url
+      htmlUrl
       category
+      feedType
       lastFetched
+      isActive
+      articles {
+        id
+        feedId
+        title
+        content
+        abstract
+        link
+        pubDate
+        fetchDate
+        author
+        status
+        feedTitle
+        feedCategory
+        __typename
+      }
       __typename
     }
   }
@@ -31,13 +67,15 @@ export const getArticle = /* GraphQL */ `
       id
       feedId
       title
+      content
       abstract
       link
       pubDate
       fetchDate
-      status
       author
+      status
       feedTitle
+      feedCategory
       __typename
     }
   }
@@ -48,13 +86,15 @@ export const getArticlesByFeed = /* GraphQL */ `
       id
       feedId
       title
+      content
       abstract
       link
       pubDate
       fetchDate
-      status
       author
+      status
       feedTitle
+      feedCategory
       __typename
     }
   }
@@ -65,13 +105,15 @@ export const getArticlesByStatus = /* GraphQL */ `
       id
       feedId
       title
+      content
       abstract
       link
       pubDate
       fetchDate
-      status
       author
+      status
       feedTitle
+      feedCategory
       __typename
     }
   }
@@ -82,13 +124,75 @@ export const getRecentArticles = /* GraphQL */ `
       id
       feedId
       title
+      content
       abstract
       link
       pubDate
       fetchDate
-      status
       author
+      status
       feedTitle
+      feedCategory
+      __typename
+    }
+  }
+`;
+export const getArticlesByDateRange = /* GraphQL */ `
+  query GetArticlesByDateRange(
+    $fromDate: AWSDateTime
+    $toDate: AWSDateTime
+    $limit: Int
+    $feedId: ID
+    $status: ArticleStatus
+  ) {
+    getArticlesByDateRange(
+      fromDate: $fromDate
+      toDate: $toDate
+      limit: $limit
+      feedId: $feedId
+      status: $status
+    ) {
+      id
+      feedId
+      title
+      content
+      abstract
+      link
+      pubDate
+      fetchDate
+      author
+      status
+      feedTitle
+      feedCategory
+      __typename
+    }
+  }
+`;
+export const getArticlesFromLastDays = /* GraphQL */ `
+  query GetArticlesFromLastDays(
+    $days: Int!
+    $limit: Int
+    $feedId: ID
+    $status: ArticleStatus
+  ) {
+    getArticlesFromLastDays(
+      days: $days
+      limit: $limit
+      feedId: $feedId
+      status: $status
+    ) {
+      id
+      feedId
+      title
+      content
+      abstract
+      link
+      pubDate
+      fetchDate
+      author
+      status
+      feedTitle
+      feedCategory
       __typename
     }
   }

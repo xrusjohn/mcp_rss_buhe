@@ -202,6 +202,8 @@ This design allows for efficient queries by:
 
 ### 4. GraphQL Schema
 
+Building upon the existing schema.graphql file, we'll enhance it with additional features:
+
 ```graphql
 type Feed {
   id: ID!
@@ -209,22 +211,25 @@ type Feed {
   url: String!
   htmlUrl: String
   category: String
-  lastFetched: String
-  articles(limit: Int, status: String): [Article]
+  feedType: FeedType
+  lastFetched: AWSDateTime
+  isActive: Boolean
+  articles(limit: Int, status: ArticleStatus): [Article]
 }
 
 type Article {
   id: ID!
   feedId: ID!
   title: String!
-  content: String!
+  content: String
   abstract: String
   link: String!
-  pubDate: String!
-  fetchDate: String!
+  pubDate: AWSDateTime!
+  fetchDate: AWSDateTime!
   author: String
   status: ArticleStatus!
-  feed: Feed
+  feedTitle: String
+  feedCategory: String
 }
 
 enum ArticleStatus {
@@ -232,32 +237,71 @@ enum ArticleStatus {
   FAVORITE
 }
 
+enum FeedType {
+  RSS
+  ATOM
+  JSON_FEED
+  CUSTOM_API
+  HTML
+}
+
 type Query {
-  getArticles(
-    status: ArticleStatus, 
-    source: String, 
-    limit: Int, 
-    fromDate: String, 
-    toDate: String,
-    lastDays: Int
+  # Feed queries
+  getFeed(id: ID!): Feed
+  listFeeds: [Feed]
+  
+  # Article queries
+  getArticle(id: ID!): Article
+  getArticlesByFeed(feedId: ID!, limit: Int): [Article]
+  getArticlesByStatus(status: ArticleStatus!, limit: Int): [Article]
+  getRecentArticles(limit: Int): [Article]
+  
+  # Enhanced queries
+  getArticlesByDateRange(
+    fromDate: AWSDateTime, 
+    toDate: AWSDateTime, 
+    limit: Int,
+    feedId: ID,
+    status: ArticleStatus
   ): [Article]
   
-  getArticleById(id: ID!): Article
-  
-  getSources: [Feed]
-  
-  getSourceById(id: ID!): Feed
+  getArticlesFromLastDays(
+    days: Int!, 
+    limit: Int,
+    feedId: ID,
+    status: ArticleStatus
+  ): [Article]
 }
 
 type Mutation {
-  setArticleStatus(id: ID!, status: ArticleStatus!): UpdateResponse
+  # Feed mutations
+  addFeed(
+    title: String!, 
+    url: String!, 
+    htmlUrl: String, 
+    category: String,
+    feedType: FeedType,
+    parserConfig: AWSJSON
+  ): Feed
   
-  addFeed(title: String!, url: String!, htmlUrl: String, category: String): Feed
+  updateFeed(
+    id: ID!,
+    title: String, 
+    url: String, 
+    htmlUrl: String, 
+    category: String,
+    feedType: FeedType,
+    parserConfig: AWSJSON,
+    isActive: Boolean
+  ): Feed
   
-  removeFeed(id: ID!): UpdateResponse
+  deleteFeed(id: ID!): UpdateResponse
   
-  subscribeToNotifications(endpoint: String!): SubscriptionResponse
+  # Article mutations
+  updateArticleStatus(id: ID!, status: ArticleStatus!): Article
   
+  # Notification mutations
+  subscribeToNotifications(endpoint: String!, protocol: String!): SubscriptionResponse
   unsubscribeFromNotifications(subscriptionArn: String!): UpdateResponse
 }
 
@@ -283,6 +327,15 @@ schema {
   subscription: Subscription
 }
 ```
+
+Key enhancements to the existing schema include:
+
+1. Added `FeedType` enum and related fields to support multiple feed types
+2. Enhanced queries for date range filtering
+3. Added subscription types for real-time updates
+4. Added notification-related mutations
+5. Enhanced feed management with update and delete operations
+6. Added response types for operations
 
 ### 5. SNS Notification System
 

@@ -6,26 +6,40 @@ type Feed {
   id: ID!
   title: String!
   url: String!
+  htmlUrl: String
   category: String
+  feedType: FeedType
   lastFetched: AWSDateTime
+  isActive: Boolean
+  articles(limit: Int, status: ArticleStatus): [Article]
 }
 
 type Article {
   id: ID!
   feedId: ID!
   title: String!
+  content: String
   abstract: String
   link: String!
   pubDate: AWSDateTime!
   fetchDate: AWSDateTime!
-  status: String!
   author: String
+  status: ArticleStatus!
   feedTitle: String
+  feedCategory: String
 }
 
 enum ArticleStatus {
   NORMAL
   FAVORITE
+}
+
+enum FeedType {
+  RSS
+  ATOM
+  JSON_FEED
+  CUSTOM_API
+  HTML
 }
 
 type Query {
@@ -38,17 +52,74 @@ type Query {
   getArticlesByFeed(feedId: ID!, limit: Int): [Article]
   getArticlesByStatus(status: ArticleStatus!, limit: Int): [Article]
   getRecentArticles(limit: Int): [Article]
+  
+  # Enhanced queries
+  getArticlesByDateRange(
+    fromDate: AWSDateTime, 
+    toDate: AWSDateTime, 
+    limit: Int,
+    feedId: ID,
+    status: ArticleStatus
+  ): [Article]
+  
+  getArticlesFromLastDays(
+    days: Int!, 
+    limit: Int,
+    feedId: ID,
+    status: ArticleStatus
+  ): [Article]
 }
 
 type Mutation {
   # Feed mutations
-  addFeed(title: String!, url: String!, category: String): Feed
+  addFeed(
+    title: String!, 
+    url: String!, 
+    htmlUrl: String, 
+    category: String,
+    feedType: FeedType,
+    parserConfig: AWSJSON
+  ): Feed
+  
+  updateFeed(
+    id: ID!,
+    title: String, 
+    url: String, 
+    htmlUrl: String, 
+    category: String,
+    feedType: FeedType,
+    parserConfig: AWSJSON,
+    isActive: Boolean
+  ): Feed
+  
+  deleteFeed(id: ID!): UpdateResponse
   
   # Article mutations
   updateArticleStatus(id: ID!, status: ArticleStatus!): Article
+  
+  # Notification mutations
+  subscribeToNotifications(endpoint: String!, protocol: String!): SubscriptionResponse
+  unsubscribeFromNotifications(subscriptionArn: String!): UpdateResponse
+}
+
+type Subscription {
+  onNewArticle(feedId: ID, category: String): Article
+  onStatusChange(articleId: ID!): Article
+}
+
+type UpdateResponse {
+  success: Boolean!
+  message: String
+}
+
+type SubscriptionResponse {
+  success: Boolean!
+  subscriptionArn: String
+  message: String
 }
 
 schema {
   query: Query
   mutation: Mutation
+  subscription: Subscription
 }
