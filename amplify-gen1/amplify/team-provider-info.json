@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-awsnews1-dev-5a1d4-authRole",
+      "UnauthRoleArn": "arn:aws:iam::441262788356:role/amplify-awsnews1-dev-5a1d4-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::441262788356:role/amplify-awsnews1-dev-5a1d4-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-awsnews1-dev-5a1d4-deployment",
+      "UnauthRoleName": "amplify-awsnews1-dev-5a1d4-unauthRole",
+      "StackName": "amplify-awsnews1-dev-5a1d4",
+      "StackId": "arn:aws:cloudformation:us-east-1:441262788356:stack/amplify-awsnews1-dev-5a1d4/d98e1c80-3515-11f0-80ef-1230c704ed91",
+      "AmplifyAppId": "d5ql5n8qe2anp"
+    },
+    "categories": {
+      "api": {
+        "awsnews1": {}
+      }
+    }
+  }
+}

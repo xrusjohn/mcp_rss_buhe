@@ -1,0 +1,54 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+type Feed {
+  id: ID!
+  title: String!
+  url: String!
+  category: String
+  lastFetched: AWSDateTime
+}
+
+type Article {
+  id: ID!
+  feedId: ID!
+  title: String!
+  abstract: String
+  link: String!
+  pubDate: AWSDateTime!
+  fetchDate: AWSDateTime!
+  status: String!
+  author: String
+  feedTitle: String
+}
+
+enum ArticleStatus {
+  NORMAL
+  FAVORITE
+}
+
+type Query {
+  # Feed queries
+  getFeed(id: ID!): Feed
+  listFeeds: [Feed]
+  
+  # Article queries
+  getArticle(id: ID!): Article
+  getArticlesByFeed(feedId: ID!, limit: Int): [Article]
+  getArticlesByStatus(status: ArticleStatus!, limit: Int): [Article]
+  getRecentArticles(limit: Int): [Article]
+}
+
+type Mutation {
+  # Feed mutations
+  addFeed(title: String!, url: String!, category: String): Feed
+  
+  # Article mutations
+  updateArticleStatus(id: ID!, status: ArticleStatus!): Article
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
